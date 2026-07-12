@@ -3,62 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration page</title>
+    <title>Create Account | Multimart</title>
+    <style>
+        :root {
+            --primary: #ff5a5f;
+            --primary-dark: #e04349;
+            --bg: #f8f9fc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
 
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #fff7f2 0%, var(--bg) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-shell {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1.05fr;
+        }
+
+        .promo-panel {
+            background: linear-gradient(145deg, var(--primary) 0%, #ff7b54 100%);
+            color: white;
+            padding: 42px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .promo-panel h1 {
+            font-size: 2rem;
+            margin: 0 0 12px;
+        }
+
+        .promo-panel p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .form-panel {
+            padding: 40px;
+        }
+
+        .form-panel h2 {
+            margin: 0 0 8px;
+            font-size: 1.8rem;
+        }
+
+        .form-panel .subtitle {
+            margin: 0 0 24px;
+            color: var(--muted);
+        }
+
+        .field-group {
+            margin-bottom: 16px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 90, 95, 0.16);
+        }
+
+        .role-options {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+            color: var(--muted);
+        }
+
+        .role-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .field-error {
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            padding: 13px 16px;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-dark);
+        }
+
+        .non-field-errors {
+            background: #fff4f4;
+            color: var(--primary);
+            padding: 10px 12px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .auth-shell { grid-template-columns: 1fr; }
+            .promo-panel { padding: 30px; }
+            .form-panel { padding: 28px; }
+        }
+    </style>
 </head>
-</form>
 <body>
-    <h2>Create Account</h2>
+    <div class="auth-shell">
+        <div class="promo-panel">
+            <h1>Join Multimart</h1>
+            <p>Create an account to enjoy fast checkout, personalized offers, and a smooth shopping experience for all your favorite products.</p>
+        </div>
 
-<form method="POST">
-    {% csrf_token %}
+        <div class="form-panel">
+            <h2>Create Account</h2>
+            <p class="subtitle">Sign up to start shopping with us.</p>
 
-    {{ form.non_field_errors }}
+            <form method="post">
+                {% csrf_token %}
 
-    <p>
-        {{ form.full_name.label_tag }}
-        {{ form.full_name }}
-        {{ form.full_name.errors }}
-    </p>
+                {% if form.non_field_errors %}
+                    <div class="non-field-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
 
-    <p>
-        {{ form.age.label_tag }}
-        {{ form.age }}
-        {{ form.age.errors }}
-    </p>
+                <div class="field-group">
+                    <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}<div class="field-error">{{ form.full_name.errors }}</div>{% endif %}
+                </div>
 
-    <p>
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {{ form.email.errors }}
-    </p>
+                <div class="field-group">
+                    <label for="{{ form.age.id_for_label }}">{{ form.age.label }}</label>
+                    {{ form.age }}
+                    {% if form.age.errors %}<div class="field-error">{{ form.age.errors }}</div>{% endif %}
+                </div>
 
-    <p>
-        {{ form.role.label_tag }}
-        {{ form.role }}
-        {{ form.role.errors }}
-    </p>
+                <div class="field-group">
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<div class="field-error">{{ form.email.errors }}</div>{% endif %}
+                </div>
 
-    <p>
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {{ form.username.errors }}
-    </p>
+                <div class="field-group">
+                    <label>{{ form.role.label }}</label>
+                    {{ form.role }}
+                    {% if form.role.errors %}<div class="field-error">{{ form.role.errors }}</div>{% endif %}
+                </div>
 
-    <p>
-        {{ form.password1.label_tag }}
-        {{ form.password1 }}
-        {{ form.password1.errors }}
-    </p>
+                <div class="field-group">
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<div class="field-error">{{ form.username.errors }}</div>{% endif %}
+                </div>
 
-    <p>
-        {{ form.password2.label_tag }}
-        {{ form.password2 }}
-        {{ form.password2.errors }}
-    </p>
+                <div class="field-group">
+                    <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}<div class="field-error">{{ form.password1.errors }}</div>{% endif %}
+                </div>
 
-    <button type="submit">Register</button>
-</form>
-    
+                <div class="field-group">
+                    <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}<div class="field-error">{{ form.password2.errors }}</div>{% endif %}
+                </div>
+
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
