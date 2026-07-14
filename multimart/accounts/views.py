@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import RegisterForm,LoginForm
-from django.contrib.auth import authentication,login
+from django.contrib.auth import authenticate,login
 # Create your views here.
 
 def register(request):
@@ -43,7 +43,10 @@ def login(request):
             else:
                 form.add_error(None,"Invalid username or password")
 
-     return render(request,"account/login.html",{"form":form})
+        return render(request,"account/login.html",{"form":form})
+
+def home(request):
+    return render(request,"accounts/home.html")
 
 
 
